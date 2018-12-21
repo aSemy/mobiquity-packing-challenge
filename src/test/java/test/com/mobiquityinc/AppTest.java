@@ -1,4 +1,4 @@
-package com.adam.mobiquity_package_challenge;
+package test.com.mobiquityinc;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

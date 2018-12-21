@@ -1,4 +1,4 @@
-package com.adam.mobiquity_package_challenge;
+package com.mobiquityinc;
 
 /**
  * Hello world!
