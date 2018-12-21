@@ -209,9 +209,9 @@ public class PackingServiceTest {
 		Item i4 = new Item(4, BigDecimal.valueOf(26.24), 55 * 100);
 		Item i5 = new Item(5, BigDecimal.valueOf(63.69), 52 * 100);
 		Item i6 = new Item(6, BigDecimal.valueOf(76.25), 75 * 100);
-		Item i7 = new Item(4, BigDecimal.valueOf(60.02), 74 * 100);
-		Item i8 = new Item(5, BigDecimal.valueOf(93.18), 35 * 100);
-		Item i9 = new Item(6, BigDecimal.valueOf(89.95), 78 * 100);
+		Item i7 = new Item(7, BigDecimal.valueOf(60.02), 74 * 100);
+		Item i8 = new Item(8, BigDecimal.valueOf(93.18), 35 * 100);
+		Item i9 = new Item(9, BigDecimal.valueOf(89.95), 78 * 100);
 
 		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1, i2, i3, i4, i5, i6, i7, i8, i9));
 
@@ -243,9 +243,9 @@ public class PackingServiceTest {
 		Item i4 = new Item(4, BigDecimal.valueOf(37.97), 16 * 100);
 		Item i5 = new Item(5, BigDecimal.valueOf(46.81), 36 * 100);
 		Item i6 = new Item(6, BigDecimal.valueOf(48.77), 79 * 100);
-		Item i7 = new Item(4, BigDecimal.valueOf(81.80), 45 * 100);
-		Item i8 = new Item(5, BigDecimal.valueOf(19.36), 79 * 100);
-		Item i9 = new Item(6, BigDecimal.valueOf(6.76), 64 * 100);
+		Item i7 = new Item(7, BigDecimal.valueOf(81.80), 45 * 100);
+		Item i8 = new Item(8, BigDecimal.valueOf(19.36), 79 * 100);
+		Item i9 = new Item(9, BigDecimal.valueOf(6.76), 64 * 100);
 
 		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1, i2, i3, i4, i5, i6, i7, i8, i9));
 
