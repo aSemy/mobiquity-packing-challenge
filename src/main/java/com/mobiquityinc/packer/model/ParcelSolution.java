@@ -2,6 +2,7 @@ package com.mobiquityinc.packer.model;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ParcelSolution {
@@ -25,7 +26,7 @@ public class ParcelSolution {
 	public BigDecimal getCurrentWeight() {
 		return items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
-	
+
 	public BigDecimal getRemainingWeightLimit() {
 		return getWeightLimit().subtract(getCurrentWeight());
 	}
@@ -40,5 +41,10 @@ public class ParcelSolution {
 
 	public void setItems(List<Item> items) {
 		this.items = items;
+	}
+
+	public String getStringOutput() {
+		Collections.sort(items);
+		return items.stream().map(i -> Long.toString(i.getIndex())).reduce((s1, s2) -> s1 + "," + s2).orElse("-");
 	}
 }

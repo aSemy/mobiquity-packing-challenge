@@ -1,7 +1,10 @@
 package com.mobiquityinc.packer.service;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Parcel;
@@ -9,12 +12,31 @@ import com.mobiquityinc.packer.model.ParcelSolution;
 
 public class PackingService {
 
+	private static final ParsingService PARSING_SERVICE = new ParsingService();
+
+
+	public List<ParcelSolution> optimise(File file) {
+		HashMap<Parcel, ArrayList<Item>> input = PARSING_SERVICE.parseFile(file);
+		
+		return this.optimise(input);
+	}
+
+	public List<ParcelSolution> optimise(HashMap<Parcel, ArrayList<Item>> input) {
+		
+		List<ParcelSolution> solutions = new ArrayList<>();
+		
+		for (Parcel p : input.keySet()) {
+			
+			ParcelSolution solution = optimise(p, input.get(p));
+			
+			solutions.add(solution);
+		}
+		
+		return solutions;
+	}
+	
 	public ParcelSolution optimise(final Parcel parcel, final ArrayList<Item> potentialItems) {
 
-		// sort list by weight? cost?
-
-		// generate all potential subsets
-		
 		return recursive(new ParcelSolution(parcel.getMaxWeight()), new ArrayList<>(potentialItems));
 
 	}
@@ -49,4 +71,5 @@ public class PackingService {
 		}
 
 	}
+
 }

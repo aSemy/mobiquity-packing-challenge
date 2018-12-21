@@ -8,7 +8,7 @@ import java.math.BigDecimal;
  * @author Adam
  *
  */
-public class Item {
+public class Item implements Comparable<Item> {
 
 	private long index;
 	private BigDecimal weight;
@@ -54,5 +54,19 @@ public class Item {
 
 	public void setCostInCents(long costInCents) {
 		this.costInCents = costInCents;
+	}
+
+	@Override
+	public int compareTo(Item other) {
+		final int BEFORE = -1;
+		final int EQUAL = 0;
+		
+		if (this == other)
+			return EQUAL;
+		
+		if (other == null)
+			return BEFORE;
+		
+		return Long.compare(this.index, other.index);
 	}
 }
