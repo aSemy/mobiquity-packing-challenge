@@ -1,6 +1,7 @@
 package com.mobiquityinc.packer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,6 @@ import com.mobiquityinc.packer.model.ParcelSolution;
 import com.mobiquityinc.packer.service.PackingService;
 
 public class Packer {
-
 
 	public static String pack(String filePath) throws APIException {
 
@@ -23,9 +23,13 @@ public class Packer {
 		if (!file.exists()) {
 			throw new APIException("Invalid file");
 		} else {
-			List<ParcelSolution> solutions = packingService.optimise(file);
+			try {
+				List<ParcelSolution> solutions = packingService.optimise(file);
+				return solutions.stream().map(s -> s.getStringOutput()).collect(Collectors.joining("\n"));
+			} catch (FileNotFoundException e) {
+				throw new APIException(e);
+			}
 
-			return solutions.stream().map(s -> s.getStringOutput()).collect(Collectors.joining("\n"));
 		}
 	}
 }
