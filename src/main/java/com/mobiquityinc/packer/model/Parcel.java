@@ -26,4 +26,9 @@ public class Parcel {
 		this.maxWeight = maxWeight;
 	}
 
+	@Override
+	public String toString() {
+		return "Parcel [maxWeight=" + maxWeight + "]";
+	}
+
 }

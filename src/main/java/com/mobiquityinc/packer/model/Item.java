@@ -60,13 +60,18 @@ public class Item implements Comparable<Item> {
 	public int compareTo(Item other) {
 		final int BEFORE = -1;
 		final int EQUAL = 0;
-		
+
 		if (this == other)
 			return EQUAL;
-		
+
 		if (other == null)
 			return BEFORE;
-		
+
 		return Long.compare(this.index, other.index);
+	}
+
+	@Override
+	public String toString() {
+		return "Item [index=" + index + ", weight=" + weight + ", costInCents=" + costInCents + "]";
 	}
 }
