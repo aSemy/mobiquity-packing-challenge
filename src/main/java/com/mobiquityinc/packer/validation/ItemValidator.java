@@ -14,7 +14,7 @@ public class ItemValidator {
 
 	public void validateItems(ArrayList<Item> items) {
 		assert items != null : "Cannot have null items";
-		assert items.size() == 0 : "Cannot have 0 items";
+		assert items.size() != 0 : "Cannot have 0 items";
 		assert items.size() <= MAX_NUM_OF_ITEMS : "Max number of items is " + MAX_NUM_OF_ITEMS;
 
 		items.forEach(i -> validateItem(i));
@@ -23,7 +23,7 @@ public class ItemValidator {
 		HashMap<Long, List<Item>> mapIndexToItems = new HashMap<>();
 		for (Item i : items) {
 
-			if (mapIndexToItems.containsKey(i.getIndex()))
+			if (!mapIndexToItems.containsKey(i.getIndex()))
 				mapIndexToItems.put(i.getIndex(), new ArrayList<>());
 
 			mapIndexToItems.get(i.getIndex()).add(i);
