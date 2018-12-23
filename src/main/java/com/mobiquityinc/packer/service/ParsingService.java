@@ -13,6 +13,44 @@ import com.mobiquityinc.packer.model.Parcel;
 
 public class ParsingService {
 
+	public HashMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
+
+		HashMap<Parcel, ArrayList<Item>> input = new HashMap<>();
+
+		Scanner fileScanner = new Scanner(file);
+
+		while (fileScanner.hasNextLine())
+			System.out.println(fileScanner.nextLine());
+
+		fileScanner.close();
+		fileScanner = new Scanner(file);
+
+		while (fileScanner.hasNextLine()) {
+			Scanner lineScanner = new Scanner(fileScanner.nextLine());
+			lineScanner.useDelimiter("[ ,\\(\\):€]+");
+
+			// get the parcel
+			BigDecimal bd = lineScanner.nextBigDecimal();
+
+			Parcel parcel = new Parcel(bd);
+
+			input.put(parcel, new ArrayList<>());
+
+			while (lineScanner.hasNext()) {
+
+				Item item = parseItem(lineScanner);
+
+				input.get(parcel).add(item);
+
+			}
+
+			lineScanner.close();
+		}
+		fileScanner.close();
+
+		return input;
+	}
+
 	public Item parseItem(final Scanner lineScanner) {
 
 		long index;
@@ -48,39 +86,6 @@ public class ParsingService {
 		long costInCents = costInEuros * 100;
 
 		return new Item(index, weight, costInCents);
-	}
-
-	public HashMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
-
-		HashMap<Parcel, ArrayList<Item>> input = new HashMap<>();
-
-		Scanner fileScanner = new Scanner(file);
-
-		while (fileScanner.hasNextLine()) {
-			Scanner lineScanner = new Scanner(fileScanner.nextLine());
-			lineScanner.useDelimiter("[ ,\\(\\):€]+");
-
-			// get the parcel
-
-			BigDecimal bd = lineScanner.nextBigDecimal();
-
-			Parcel parcel = new Parcel(bd);
-
-			input.put(parcel, new ArrayList<>());
-
-			while (lineScanner.hasNext()) {
-
-				Item item = parseItem(lineScanner);
-
-				input.get(parcel).add(item);
-
-			}
-
-			lineScanner.close();
-		}
-		fileScanner.close();
-
-		return input;
 	}
 
 }
