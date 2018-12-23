@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -12,6 +13,9 @@ import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Parcel;
 import com.mobiquityinc.packer.model.ParcelSolution;
 import com.mobiquityinc.packer.service.PackingService;
+import com.mobiquityinc.packer.validation.ItemValidator;
+
+import test.com.mobiquityinc.PackerRandomTestUtils;
 
 public class PackingServiceTest {
 
@@ -256,5 +260,53 @@ public class PackingServiceTest {
 		assertEquals(i8.getWeight().add(i9.getWeight()), solution.getCurrentWeight());
 
 		assertEquals("8,9", solution.getStringOutput());
+	}
+	
+	@Test
+	public void test15RandomItems_1() {
+		
+		BigDecimal parcelMaxWeight = BigDecimal.valueOf(50);
+		
+		Parcel p = new Parcel(parcelMaxWeight);
+		
+		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1, p.getMaxWeight());
+		BigDecimal createdWeight = items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		assertEquals(0, parcelMaxWeight.compareTo(createdWeight));
+		
+		PackingService ps = new PackingService();
+		ParcelSolution solution = ps.optimise(p, items);
+		
+
+		// all weight should have been used
+		assertEquals(0, createdWeight.compareTo(solution.getCurrentWeight()));
+		assertEquals(0, BigDecimal.ZERO.compareTo(solution.getRemainingWeightLimit()));
+		
+		// all items should be in solution
+		assertEquals(items.size(), solution.getItems().size());
+	}
+	
+	@Test
+	public void test15RandomItems_2() {
+		
+		BigDecimal parcelMaxWeight = BigDecimal.valueOf(50);
+		
+		Parcel p = new Parcel(parcelMaxWeight);
+		
+		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1, p.getMaxWeight());
+		BigDecimal createdWeight = items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
+		
+		assertEquals(0, parcelMaxWeight.compareTo(createdWeight));
+		
+		PackingService ps = new PackingService();
+		ParcelSolution solution = ps.optimise(p, items);
+		
+
+		// all weight should have been used
+		assertEquals(0, createdWeight.compareTo(solution.getCurrentWeight()));
+		assertEquals(0, BigDecimal.ZERO.compareTo(solution.getRemainingWeightLimit()));
+		
+		// all items should be in solution
+		assertEquals(items.size(), solution.getItems().size());
 	}
 }
