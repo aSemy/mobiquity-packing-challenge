@@ -198,7 +198,7 @@ public class PackerTest {
 		assert false : "Exception should be thrown, as input file is blank. Got output: '" + solutionString + "'";
 	}
 
-	@Test
+	@Test(expected = APIException.class)
 	public void testInvalidInput_endsEarly() throws IOException {
 
 		FileWriter writer = new FileWriter(file);
