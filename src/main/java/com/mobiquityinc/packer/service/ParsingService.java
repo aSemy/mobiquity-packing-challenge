@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,9 +19,9 @@ public class ParsingService {
 
 	private static final Logger logger = LoggerFactory.getLogger(ParsingService.class);
 
-	public HashMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
+	public TreeMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
 
-		HashMap<Parcel, ArrayList<Item>> parsedInput = new HashMap<>();
+		TreeMap<Parcel, ArrayList<Item>> parsedInput = new TreeMap<>();
 
 		Scanner fileScanner = new Scanner(file);
 
@@ -33,6 +34,7 @@ public class ParsingService {
 			fileScanner = new Scanner(file);
 		}
 
+		long lineNumber = 1;
 		while (fileScanner.hasNextLine()) {
 			Scanner lineScanner = new Scanner(fileScanner.nextLine());
 			lineScanner.useDelimiter("[ ,\\(\\):€]+");
@@ -40,7 +42,7 @@ public class ParsingService {
 			// get the parcel
 			BigDecimal bd = lineScanner.nextBigDecimal();
 
-			Parcel parcel = new Parcel(bd);
+			Parcel parcel = new Parcel(lineNumber++, bd);
 
 			parsedInput.put(parcel, new ArrayList<>());
 

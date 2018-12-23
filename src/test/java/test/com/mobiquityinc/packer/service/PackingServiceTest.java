@@ -24,7 +24,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(30d);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, 10, 10);
 		Item i2 = new Item(2, 10, 20);
@@ -48,7 +48,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(30d);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, 10, 10);
 		Item i2 = new Item(2, 10, 20);
@@ -71,7 +71,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(30d);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, maxWeight.add(BigDecimal.valueOf(1)), 10);
 		Item i2 = new Item(2, maxWeight.add(BigDecimal.valueOf(2)), 20);
@@ -94,7 +94,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(10d);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, BigDecimal.valueOf(1), 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(10), 100);
@@ -118,7 +118,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(10d);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, BigDecimal.valueOf(10), 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(1), 100);
@@ -147,7 +147,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(81);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, BigDecimal.valueOf(53.38), 45 * 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(88.62), 98 * 100);
@@ -178,7 +178,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(8);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, BigDecimal.valueOf(15.3), 34 * 100);
 
@@ -204,7 +204,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(75);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, BigDecimal.valueOf(85.31), 29 * 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(14.55), 74 * 100);
@@ -238,7 +238,7 @@ public class PackingServiceTest {
 
 		BigDecimal maxWeight = new BigDecimal(56);
 
-		Parcel p = new Parcel(maxWeight);
+		Parcel p = new Parcel(1, maxWeight);
 
 		Item i1 = new Item(1, BigDecimal.valueOf(90.72), 13 * 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(33.80), 40 * 100);
@@ -266,7 +266,7 @@ public class PackingServiceTest {
 		
 		BigDecimal parcelMaxWeight = BigDecimal.valueOf(50);
 		
-		Parcel p = new Parcel(parcelMaxWeight);
+		Parcel p = new Parcel(1, parcelMaxWeight);
 		
 		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1, p.getMaxWeight());
 		BigDecimal createdWeight = items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
@@ -290,7 +290,7 @@ public class PackingServiceTest {
 		
 		BigDecimal parcelMaxWeight = BigDecimal.valueOf(50);
 		
-		Parcel p = new Parcel(parcelMaxWeight);
+		Parcel p = new Parcel(1, parcelMaxWeight);
 		
 		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1, p.getMaxWeight());
 		BigDecimal createdWeight = items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);

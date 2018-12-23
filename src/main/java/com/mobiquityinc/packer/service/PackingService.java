@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -27,12 +28,12 @@ public class PackingService {
 	private static final ParcelValidator parcelValidator = new ParcelValidator();
 
 	public List<ParcelSolution> optimise(File file) throws FileNotFoundException {
-		HashMap<Parcel, ArrayList<Item>> input = PARSING_SERVICE.parseFile(file);
+		TreeMap<Parcel, ArrayList<Item>> input = PARSING_SERVICE.parseFile(file);
 
 		return this.optimise(input);
 	}
 
-	public List<ParcelSolution> optimise(HashMap<Parcel, ArrayList<Item>> input) {
+	public List<ParcelSolution> optimise(TreeMap<Parcel, ArrayList<Item>> input) {
 
 		// validate
 		input.keySet().forEach(p -> parcelValidator.validateParcel(p));
