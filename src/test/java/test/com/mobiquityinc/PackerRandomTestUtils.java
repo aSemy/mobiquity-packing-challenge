@@ -34,7 +34,7 @@ public class PackerRandomTestUtils {
 				itemWeight = BigDecimal.valueOf(randomDouble(0.01d, remainingWeight.divide(BigDecimal.valueOf(2)).doubleValue()));
 			}
 			
-			Item item = new Item(index, itemWeight, random.longs(1, ItemValidator.MAX_ITEM_COST).findFirst().getAsLong());
+			Item item = new Item(index, itemWeight, random.longs(1, ItemValidator.MAX_ITEM_COST_IN_CENTS).findFirst().getAsLong());
 			items.add(item);
 			
 			remainingWeight = remainingWeight.subtract(item.getWeight());

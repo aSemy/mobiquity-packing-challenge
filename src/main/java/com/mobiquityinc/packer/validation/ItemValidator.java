@@ -10,7 +10,7 @@ import com.mobiquityinc.packer.model.Item;
 public class ItemValidator {
 
 	public static final long MAX_ITEM_WEIGHT = 100;
-	public static final long MAX_ITEM_COST = 100;
+	public static final long MAX_ITEM_COST_IN_CENTS = 100 * 100;
 	public static final int MAX_NUM_OF_ITEMS = 15;
 
 	public void validateItems(ArrayList<Item> items) {
