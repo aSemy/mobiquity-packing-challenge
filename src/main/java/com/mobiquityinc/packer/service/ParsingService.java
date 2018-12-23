@@ -8,22 +8,30 @@ import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Parcel;
 
 public class ParsingService {
 
+	private static final Logger logger = LoggerFactory.getLogger(ParsingService.class);
+
 	public HashMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
 
-		HashMap<Parcel, ArrayList<Item>> input = new HashMap<>();
+		HashMap<Parcel, ArrayList<Item>> parsedInput = new HashMap<>();
 
 		Scanner fileScanner = new Scanner(file);
 
-		while (fileScanner.hasNextLine())
-			System.out.println(fileScanner.nextLine());
-
-		fileScanner.close();
-		fileScanner = new Scanner(file);
+		if (logger.isDebugEnabled()) {
+			logger.debug("Reading in file " + file.getName());
+			while (fileScanner.hasNextLine()) {
+				logger.debug(fileScanner.nextLine());
+			}
+			fileScanner.close();
+			fileScanner = new Scanner(file);
+		}
 
 		while (fileScanner.hasNextLine()) {
 			Scanner lineScanner = new Scanner(fileScanner.nextLine());
@@ -34,13 +42,13 @@ public class ParsingService {
 
 			Parcel parcel = new Parcel(bd);
 
-			input.put(parcel, new ArrayList<>());
+			parsedInput.put(parcel, new ArrayList<>());
 
 			while (lineScanner.hasNext()) {
 
 				Item item = parseItem(lineScanner);
 
-				input.get(parcel).add(item);
+				parsedInput.get(parcel).add(item);
 
 			}
 
@@ -48,7 +56,7 @@ public class ParsingService {
 		}
 		fileScanner.close();
 
-		return input;
+		return parsedInput;
 	}
 
 	public Item parseItem(final Scanner lineScanner) {
