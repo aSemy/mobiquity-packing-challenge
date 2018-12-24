@@ -33,7 +33,7 @@ public class PackerTest {
 	}
 
 	@Test
-	public void test() {
+	public void testFromExampleDataFile() {
 		String answer = Packer.pack("src\\resources\\test-data\\data1");
 
 		Scanner scanner = new Scanner(answer);
