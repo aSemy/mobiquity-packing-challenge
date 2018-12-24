@@ -20,16 +20,15 @@ public class Packer {
 
 		File file = new File(filePath);
 
-		if (!file.exists()) {
+		if (file == null || !file.exists()) {
 			throw new APIException("Invalid file");
 		} else {
 			try {
 				List<ParcelSolution> solutions = packingService.optimise(file);
 				return solutions.stream().map(s -> s.getStringOutput()).collect(Collectors.joining("\n"));
-			} catch (FileNotFoundException e) {
+			} catch (FileNotFoundException | IllegalStateException | IllegalArgumentException e) {
 				throw new APIException(e);
 			}
-
 		}
 	}
 }
