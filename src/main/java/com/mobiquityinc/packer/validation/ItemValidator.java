@@ -10,7 +10,10 @@ import com.mobiquityinc.packer.model.Item;
 
 public class ItemValidator {
 
-	public static final long MAX_ITEM_WEIGHT = 100;
+	public static final BigDecimal MAX_ITEM_WEIGHT = BigDecimal.valueOf(100);
+	/**
+	 * 100 Euros in cents (100*100=10000)
+	 */
 	public static final long MAX_ITEM_COST_IN_CENTS = 100 * 100;
 	public static final int MAX_NUM_OF_ITEMS = 15;
 
@@ -27,8 +30,8 @@ public class ItemValidator {
 			return errors;
 		}
 		if (items.size() > MAX_NUM_OF_ITEMS) {
-			errors.add(
-					new ValidationError("Exceeded max number of items (" + MAX_NUM_OF_ITEMS + " vs " + items.size() + ")"));
+			errors.add(new ValidationError(
+					"Exceeded max number of items (" + MAX_NUM_OF_ITEMS + " vs " + items.size() + ")"));
 			return errors;
 		}
 
@@ -59,7 +62,6 @@ public class ItemValidator {
 
 		List<ValidationError> errors = new ArrayList<>();
 
-		assert item != null;
 		if (item == null) {
 			errors.add(new ValidationError("Cannot have null item"));
 			return errors;
@@ -71,9 +73,9 @@ public class ItemValidator {
 		if (item.getCostInCents() <= 0)
 			errors.add(new ValidationError("Cannot have non-positive cost"));
 
-		if (item.getWeight().compareTo(BigDecimal.valueOf(MAX_ITEM_WEIGHT)) > 0)
-			errors.add(new ValidationError(
-					"Item weight cannot exceed " + MAX_ITEM_WEIGHT + ", but was " + item.getWeight().toString()));
+		if (item.getWeight().compareTo(MAX_ITEM_WEIGHT) > 0)
+			errors.add(new ValidationError("Item weight cannot exceed " + MAX_ITEM_WEIGHT.toString() + ", but was "
+					+ item.getWeight().toString()));
 
 		if (item.getCostInCents() > MAX_ITEM_COST_IN_CENTS)
 			errors.add(new ValidationError("Item cost (in cents) cannot exceed " + MAX_ITEM_COST_IN_CENTS + ", but was "

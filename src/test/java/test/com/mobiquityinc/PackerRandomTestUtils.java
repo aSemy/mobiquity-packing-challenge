@@ -12,9 +12,10 @@ public class PackerRandomTestUtils {
 
 	private static final Random random = new SecureRandom("seed".getBytes());
 
-	public static ArrayList<Item> getRandomItems(final long count, final long startIndex, final BigDecimal totalWeight) {
-		
-		assert totalWeight.longValue() <= ItemValidator.MAX_ITEM_WEIGHT;
+	public static ArrayList<Item> getRandomItems(final long count, final long startIndex,
+			final BigDecimal totalWeight) {
+
+		assert totalWeight.compareTo(ItemValidator.MAX_ITEM_WEIGHT) <= 0;
 
 		ArrayList<Item> items = new ArrayList<>();
 
@@ -24,19 +25,20 @@ public class PackerRandomTestUtils {
 		for (int i = 0; i < count; i++, index++) {
 
 			BigDecimal itemWeight;
-			
+
 			if (i + 1 == count) {
 				// it's the last element, use the remaining weight
 				itemWeight = new BigDecimal(remainingWeight.toString());
-			}
-			else {
+			} else {
 				// get a random weight between 0.01 and remainingWeight/2
-				itemWeight = BigDecimal.valueOf(randomDouble(0.01d, remainingWeight.divide(BigDecimal.valueOf(2)).doubleValue()));
+				itemWeight = BigDecimal
+						.valueOf(randomDouble(0.01d, remainingWeight.divide(BigDecimal.valueOf(2)).doubleValue()));
 			}
-			
-			Item item = new Item(index, itemWeight, random.longs(1, ItemValidator.MAX_ITEM_COST_IN_CENTS).findFirst().getAsLong());
+
+			Item item = new Item(index, itemWeight,
+					random.longs(1, ItemValidator.MAX_ITEM_COST_IN_CENTS).findFirst().getAsLong());
 			items.add(item);
-			
+
 			remainingWeight = remainingWeight.subtract(item.getWeight());
 
 		}
