@@ -30,7 +30,7 @@ To use in other projects (locally), run `mvn clean install`, then add this proje
     <dependency>
       <groupId>com.mobiquityinc</groupId>
       <artifactId>mobiquity-package-challenge</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
+      <version>1.0</version>
     </dependency>
 ```
 
