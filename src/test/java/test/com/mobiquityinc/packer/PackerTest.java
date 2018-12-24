@@ -1,4 +1,4 @@
-package test.com.mobiquityinc;
+package test.com.mobiquityinc.packer;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
