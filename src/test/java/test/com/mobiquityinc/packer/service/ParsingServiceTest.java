@@ -331,6 +331,50 @@ public class ParsingServiceTest {
 	}
 
 	@Test
+	public void testInvalidParcelWeight_Missing() throws IOException {
+
+		// expect exception
+		thrown.expect(APIException.class);
+		thrown.expectMessage("no parcel weight");
+
+		ParsingService ps = new ParsingService();
+
+		FileWriter writer = new FileWriter(file);
+
+		// wrong parcel weight
+		// -----------\/-------------------
+		writer.write("   : (1,1,€10) (2,1,€11)");
+
+		writer.close();
+
+		ps.parseFile(file);
+
+		fail("exception should have been thrown");
+	}
+
+	@Test
+	public void testInvalidItems_Missing() throws IOException {
+
+		// expect exception
+		thrown.expect(APIException.class);
+		thrown.expectMessage("no items");
+
+		ParsingService ps = new ParsingService();
+
+		FileWriter writer = new FileWriter(file);
+
+		// missing items
+		// ----------------------\/-------------------
+		writer.write("13 :                       ");
+
+		writer.close();
+
+		ps.parseFile(file);
+
+		fail("exception should have been thrown");
+	}
+
+	@Test
 	public void testInvalidParcelWeight_negative() throws IOException {
 
 		// negative parcel weight is invalid, but it should still parse
