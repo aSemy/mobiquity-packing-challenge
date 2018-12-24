@@ -8,7 +8,7 @@ The computer science problem is the '0/1 knapsack problem'. Parsing and validati
 
 ## Running
 
-Main class is Packer.pack(filepath). This must be passed the location of a file with valid data.
+Main class is [Packer.java](https://github.com/aSemy/mobiquity-packing-challenge/blob/master/src/main/java/com/mobiquityinc/packer/Packer.java). The method `pack(filepath)` can be called to process a file. This must be passed the location of a file with valid data.
 
 Data must be formatted so that each line is an independent problem to be solved. The expected encoding is UTF-8.
 
@@ -18,6 +18,25 @@ Format: `<parcel weight (positive rational number)> : (<item index (positive int
 
 There can be up to 15 items.
 
+### Tests
+
+Unit tests can be run with `mvn test`
+
+### Install
+
+To use in other projects (locally), run `mvn clean install`, then add this project as a dependency.
+
+```
+    <dependency>
+      <groupId>com.mobiquityinc</groupId>
+      <artifactId>mobiquity-package-challenge</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+```
+
+### Errors
+
+Exceptions should be wrapped in an APIException. Even if only one line has an error, no response will be returned for other valid lines.
 
 ### Notes
 
