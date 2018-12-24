@@ -54,16 +54,16 @@ public class PackerTest {
 
 		// all should fit
 		// solution: 1,2,3,4
-		writer.write("10 : (1,1,10) (2,1,10) (3,1,10) (4,1,10)\n");
+		writer.write("10 : (1,1,€10) (2,1,€10) (3,1,€10) (4,1,€10)\n");
 		// Test recurring numbers. 3 will fit exactly, one won't
 		// solution: 1,2,3
-		writer.write("10 : (1,3.33333,10) (2,3.33333,10) (3,3.33333,10) (4,9,10)\n");
+		writer.write("10 : (1,3.33333,€10) (2,3.33333,€10) (3,3.33333,€10) (4,9,€10)\n");
 		// none fit
 		// solution: -
-		writer.write("0.9999999999 : (1,2.22,10) (2,3.41,10) (3,3.512,10) (4,4.5151,10)\n");
+		writer.write("0.9999999999 : (1,2.22,€10) (2,3.41,€10) (3,3.512,€10) (4,4.5151,€10)\n");
 		// test same weight, different costs
 		// solution: 2
-		writer.write("20.05 : (1,20.05,10) (2,20.05,11)\n");
+		writer.write("20.05 : (1,20.05,€10) (2,20.05,€11)\n");
 
 		writer.close();
 
@@ -91,7 +91,7 @@ public class PackerTest {
 
 		// all should fit
 		// solution: 1,2,3,4
-		writer.write("10 : (1,1,10) (2,1,10) (3,1,10) (4,1,10)\n");
+		writer.write("10 : (1,1,€10) (2,1,€10) (3,1,€10) (4,1,€10)\n");
 
 		writer.close();
 
@@ -114,7 +114,7 @@ public class PackerTest {
 
 		// Test recurring numbers. 3 will fit exactly, one won't
 		// solution: 1,2,3
-		writer.write("10 : (1,3.33333,10) (2,3.33333,10) (3,3.33333,10) (4,9,10)\n");
+		writer.write("10 : (1,3.33333,€10) (2,3.33333,€10) (3,3.33333,€10) (4,9,€10)\n");
 
 		writer.close();
 
@@ -134,7 +134,7 @@ public class PackerTest {
 
 		// none fit
 		// solution: -
-		writer.write("1 : (1,2.22,10) (2,3.41,10) (3,3.512,10) (4,4.5151,10)\n");
+		writer.write("1 : (1,2.22,€10) (2,3.41,€10) (3,3.512,€10) (4,4.5151,€10)\n");
 
 		writer.close();
 
@@ -154,7 +154,7 @@ public class PackerTest {
 
 		// test same weight, different costs
 		// solution: 2
-		writer.write("20.05 : (1,20.05,10) (2,20.05,11)\n");
+		writer.write("20.05 : (1,20.05,€10) (2,20.05,€11)\n");
 
 		writer.close();
 
@@ -171,9 +171,7 @@ public class PackerTest {
 
 		FileWriter writer = new FileWriter(file);
 
-		// test same weight, different costs
-		// solution: 2
-		writer.write("23.41 : (1,11.705,10) (2,11.705,11)\n");
+		writer.write("23.41 : (1,11.705,€10) (2,11.705,€11)\n");
 
 		writer.close();
 
@@ -204,8 +202,6 @@ public class PackerTest {
 
 		FileWriter writer = new FileWriter(file);
 
-		// test same weight, different costs
-		// solution: 2
 		writer.write("23.41 : (1,11.70");
 
 		writer.close();
