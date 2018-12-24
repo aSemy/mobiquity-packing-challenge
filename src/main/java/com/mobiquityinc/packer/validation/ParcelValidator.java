@@ -8,7 +8,7 @@ import com.mobiquityinc.packer.model.Parcel;
 
 public class ParcelValidator {
 
-	private static final long MAX_WEIGHT = 100;
+	public static final BigDecimal MAX_WEIGHT = BigDecimal.valueOf(100);
 
 	public List<ValidationError> validateParcel(Parcel parcel) {
 
@@ -19,7 +19,7 @@ public class ParcelValidator {
 			return errors;
 		}
 
-		if (parcel.getMaxWeight().compareTo(BigDecimal.valueOf(MAX_WEIGHT)) > 0)
+		if (parcel.getMaxWeight().compareTo(MAX_WEIGHT) > 0)
 			errors.add(new ValidationError(
 					"Parcel weight cannot exceed " + MAX_WEIGHT + ", but was " + parcel.getMaxWeight()));
 
