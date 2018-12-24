@@ -15,6 +15,7 @@ import org.junit.Test;
 
 import com.mobiquityinc.exception.APIException;
 import com.mobiquityinc.packer.Packer;
+import com.mobiquityinc.packer.model.ParcelSolution;
 
 public class PackerTest {
 
@@ -39,7 +40,7 @@ public class PackerTest {
 		scanner.useDelimiter("\n");
 
 		assertEquals("4", scanner.next());
-		assertEquals("-", scanner.next());
+		assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, scanner.next());
 		assertEquals("2,7", scanner.next());
 		assertEquals("8,9", scanner.next());
 
@@ -78,7 +79,7 @@ public class PackerTest {
 
 		assertEquals("1,2,3,4", sol[0]);
 		assertEquals("1,2,3", sol[1]);
-		assertEquals("-", sol[2]);
+		assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, sol[2]);
 		assertEquals("2", sol[3]);
 
 	}
@@ -142,7 +143,7 @@ public class PackerTest {
 		assertNotNull(solutionString);
 		assertFalse(solutionString.trim().isEmpty());
 
-		assertEquals("-", solutionString);
+		assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, solutionString);
 
 	}
 

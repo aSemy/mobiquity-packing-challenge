@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 public class ParcelSolution {
 
+	public static final String INVALID_INPUT_RESPONSE = "-";
+	
 	private List<Item> items = new ArrayList<Item>();
 
 	private BigDecimal weightLimit;
@@ -51,13 +53,13 @@ public class ParcelSolution {
 
 	public String getStringOutput() {
 		Collections.sort(items);
-		return items.stream().map(i -> Long.toString(i.getIndex())).reduce((s1, s2) -> s1 + "," + s2).orElse("-");
+		return items.stream().map(i -> Long.toString(i.getIndex())).reduce((s1, s2) -> s1 + "," + s2).orElse(INVALID_INPUT_RESPONSE);
 	}
 
 	@Override
 	public String toString() {
 
-		final String itemsSize = items != null ? Integer.toString(items.size()) : "-";
+		final String itemsSize = items != null ? Integer.toString(items.size()) : INVALID_INPUT_RESPONSE;
 		final String itemsString = items != null
 				? items.stream().map(i -> (i != null ? i.toString() : "null")).collect(Collectors.joining(","))
 				: "null";

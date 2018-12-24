@@ -85,7 +85,7 @@ public class PackingServiceTest {
 
 		assertEquals(BigDecimal.ZERO, solution.getCurrentWeight());
 
-		assertEquals("-", solution.getStringOutput());
+		assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, solution.getStringOutput());
 	}
 
 	@Test
@@ -190,7 +190,7 @@ public class PackingServiceTest {
 
 		assertEquals(BigDecimal.ZERO, solution.getCurrentWeight());
 
-		assertEquals("-", solution.getStringOutput());
+		assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, solution.getStringOutput());
 	}
 
 	/**
