@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class ParcelSolution {
 
 	public static final String INVALID_INPUT_RESPONSE = "-";
-	
+
 	private List<Item> items = new ArrayList<Item>();
 
 	private BigDecimal weightLimit;
@@ -32,7 +32,11 @@ public class ParcelSolution {
 	}
 
 	public BigDecimal getCurrentWeight() {
-		return items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
+		if (items == null)
+			return BigDecimal.ZERO;
+		else
+			return items.stream().map(i -> i != null ? i.getWeight() : BigDecimal.ZERO).reduce(BigDecimal.ZERO,
+					BigDecimal::add);
 	}
 
 	public BigDecimal getRemainingWeightLimit() {
@@ -40,7 +44,10 @@ public class ParcelSolution {
 	}
 
 	public long getTotalCostInCents() {
-		return items.stream().mapToLong(i -> i.getCostInCents()).sum();
+		if (items == null)
+			return 0;
+		else
+			return items.stream().mapToLong(i -> i != null ? i.getCostInCents() : 0).sum();
 	}
 
 	public BigDecimal getWeightLimit() {
@@ -53,7 +60,8 @@ public class ParcelSolution {
 
 	public String getStringOutput() {
 		Collections.sort(items);
-		return items.stream().map(i -> Long.toString(i.getIndex())).reduce((s1, s2) -> s1 + "," + s2).orElse(INVALID_INPUT_RESPONSE);
+		return items.stream().map(i -> Long.toString(i.getIndex())).reduce((s1, s2) -> s1 + "," + s2)
+				.orElse(INVALID_INPUT_RESPONSE);
 	}
 
 	@Override
