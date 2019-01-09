@@ -11,11 +11,13 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.mobiquityinc.exception.APIException;
 import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Parcel;
 import com.mobiquityinc.packer.model.ParcelSolution;
 import com.mobiquityinc.packer.validation.ItemValidator;
 import com.mobiquityinc.packer.validation.ParcelValidator;
+import com.mobiquityinc.packer.validation.ValidationError;
 
 public class PackingService {
 
@@ -35,8 +37,16 @@ public class PackingService {
 	public List<ParcelSolution> optimise(TreeMap<Parcel, ArrayList<Item>> input) {
 
 		// validate
-		input.keySet().forEach(p -> parcelValidator.validateParcel(p));
-		input.values().forEach(items -> itemValidator.validateItems(items));
+		List<ValidationError> errors = new ArrayList<>();
+		errors.addAll(input.keySet().stream().map(p -> parcelValidator.validateParcel(p)).flatMap(List::stream)
+				.collect(Collectors.toList()));
+		errors.addAll(input.values().stream().map(items -> itemValidator.validateItems(items)).flatMap(List::stream)
+				.collect(Collectors.toList()));
+
+		if (!errors.isEmpty()) {
+			String errorsJoinedString = errors.stream().map(e -> e.getMessage()).collect(Collectors.joining(", "));
+			throw new APIException("Validation error(s): [" + errorsJoinedString + "]");
+		}
 
 		// get crunching on solutions
 		List<ParcelSolution> solutions = new ArrayList<>();
