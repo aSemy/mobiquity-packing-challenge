@@ -34,7 +34,9 @@ public class PackerTest {
 
 	@Test
 	public void testFromExampleDataFile() {
-		String answer = Packer.pack("src\\resources\\test-data\\data1");
+
+		String answer = Packer.pack("src" + File.separatorChar + "resources" + File.separatorChar + "test-data"
+				+ File.separatorChar + "data1");
 
 		Scanner scanner = new Scanner(answer);
 		scanner.useDelimiter("\n");
