@@ -26,6 +26,14 @@ public class ParsingService {
 	private static final String regexDouble = "-?\\d*\\.?\\d+";
 	private static final String regexLong = "\\d+";
 
+	/**
+	 * match contents of brackets
+	 */
+	private static final Pattern ITEM_BRACKETS_PATTERN = Pattern
+			.compile("( \\(" + regexLong + "," + regexDouble + ",€" + regexDouble + "\\))");
+	private static final Pattern ITEM_BRACKETS_CONTENT_PATTERN = Pattern
+			.compile(" \\((" + regexLong + "),(" + regexDouble + "),€(" + regexDouble + ")\\)");
+
 	public TreeMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
 
 		// debug output
@@ -86,11 +94,7 @@ public class ParsingService {
 				validateItemBrackets(itemsString);
 
 				// match contents of brackets
-				// Pattern pattern = Pattern.compile("(
-				// \\(\\d+,\\d+\\.?\\d*,€\\d+\\.?\\d*\\))");
-				Pattern pattern = Pattern
-						.compile("( \\(" + regexLong + "," + regexDouble + ",€" + regexDouble + "\\))");
-				Matcher matcher = pattern.matcher(itemsString);
+				Matcher matcher = ITEM_BRACKETS_PATTERN.matcher(itemsString);
 
 				ArrayList<String> matches = new ArrayList<>();
 				while (matcher.find()) {
@@ -120,9 +124,7 @@ public class ParsingService {
 
 	public Item parseItem(final String itemString) {
 
-		Pattern itemPattern = Pattern
-				.compile(" \\((" + regexLong + "),(" + regexDouble + "),€(" + regexDouble + ")\\)");
-		Matcher matcher = itemPattern.matcher(itemString);
+		Matcher matcher = ITEM_BRACKETS_CONTENT_PATTERN.matcher(itemString);
 
 		assert matcher.find() : "Couldn't parse item";
 		assert matcher.groupCount() == 3 : "Expect each item to have three qualities";
