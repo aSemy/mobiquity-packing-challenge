@@ -34,7 +34,19 @@ public class PackingService {
 		return this.optimise(input);
 	}
 
-	public List<ParcelSolution> optimise(TreeMap<Parcel, ArrayList<Item>> input) {
+	public ParcelSolution optimise(final Parcel parcel, final ArrayList<Item> potentialItems) {
+
+		TreeMap<Parcel, ArrayList<Item>> input = new TreeMap<>();
+		input.put(parcel, potentialItems);
+		List<ParcelSolution> result = optimise(input);
+
+		assert result != null;
+		assert result.size() == 1;
+
+		return result.iterator().next();
+	}
+
+	public List<ParcelSolution> optimise(final TreeMap<Parcel, ArrayList<Item>> input) {
 
 		// validate
 		List<ValidationError> errors = new ArrayList<>();
@@ -51,9 +63,8 @@ public class PackingService {
 		// get crunching on solutions
 		List<ParcelSolution> solutions = new ArrayList<>();
 
-		for (Parcel p : input.keySet()) {
-
-			ParcelSolution solution = optimise(p, input.get(p));
+		for (final Parcel p : input.keySet()) {
+			ParcelSolution solution = recursive(p, input.get(p));
 
 			solutions.add(solution);
 		}
@@ -61,13 +72,11 @@ public class PackingService {
 		return solutions;
 	}
 
-	public ParcelSolution optimise(final Parcel parcel, final ArrayList<Item> potentialItems) {
-
-		return recursive(new ParcelSolution(parcel.getMaxWeight()), new ArrayList<>(potentialItems));
-
+	private ParcelSolution recursive(final Parcel parcel, final ArrayList<Item> potentialItems) {
+		return recursive(new ParcelSolution(parcel.getMaxWeight()), potentialItems);
 	}
 
-	private ParcelSolution recursive(ParcelSolution solution, ArrayList<Item> potentialItems) {
+	private ParcelSolution recursive(final ParcelSolution solution, ArrayList<Item> potentialItems) {
 		// make a copy of current items, so other branches are not affected
 		potentialItems = new ArrayList<>(potentialItems);
 
