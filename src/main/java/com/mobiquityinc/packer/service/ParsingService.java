@@ -28,20 +28,20 @@ public class ParsingService {
 
 	public TreeMap<Parcel, ArrayList<Item>> parseFile(File file) throws FileNotFoundException, InputMismatchException {
 
-		try {
-
-			TreeMap<Parcel, ArrayList<Item>> parsedInput = new TreeMap<>();
-
-			Scanner fileScanner = new Scanner(file);
-
+		// debug output
+		try (Scanner fileScanner = new Scanner(file)) {
 			if (logger.isDebugEnabled()) {
 				logger.debug("Reading in file " + file.getName());
 				while (fileScanner.hasNextLine()) {
 					logger.debug(fileScanner.nextLine());
 				}
 				fileScanner.close();
-				fileScanner = new Scanner(file);
 			}
+		}
+
+		try (Scanner fileScanner = new Scanner(file)) {
+
+			TreeMap<Parcel, ArrayList<Item>> parsedInput = new TreeMap<>();
 
 			long lineNumber = 1;
 			while (fileScanner.hasNextLine()) {

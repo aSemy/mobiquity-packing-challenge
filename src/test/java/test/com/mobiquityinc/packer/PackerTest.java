@@ -38,15 +38,16 @@ public class PackerTest {
 		String answer = Packer.pack("src" + File.separatorChar + "resources" + File.separatorChar + "test-data"
 				+ File.separatorChar + "data1");
 
-		Scanner scanner = new Scanner(answer);
-		scanner.useDelimiter("\n");
+		try (Scanner scanner = new Scanner(answer)) {
+			scanner.useDelimiter("\n");
 
-		assertEquals("4", scanner.next());
-		assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, scanner.next());
-		assertEquals("2,7", scanner.next());
-		assertEquals("8,9", scanner.next());
+			assertEquals("4", scanner.next());
+			assertEquals(ParcelSolution.INVALID_INPUT_RESPONSE, scanner.next());
+			assertEquals("2,7", scanner.next());
+			assertEquals("8,9", scanner.next());
 
-		scanner.close();
+			scanner.close();
+		}
 	}
 
 	@Test
