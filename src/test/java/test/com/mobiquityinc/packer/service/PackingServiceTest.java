@@ -6,8 +6,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
+import com.mobiquityinc.exception.APIException;
 import com.mobiquityinc.packer.model.Item;
 import com.mobiquityinc.packer.model.Parcel;
 import com.mobiquityinc.packer.model.ParcelSolution;
@@ -17,6 +20,9 @@ import com.mobiquityinc.packer.validation.ItemValidator;
 import test.com.mobiquityinc.PackerRandomTestUtils;
 
 public class PackingServiceTest {
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Test
 	public void test_allFit() {
@@ -98,7 +104,7 @@ public class PackingServiceTest {
 
 		Item i1 = new Item(1, BigDecimal.valueOf(1), 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(10), 100);
-		
+
 		assert i1.getCostInCents() == i2.getCostInCents();
 
 		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1, i2));
@@ -122,7 +128,7 @@ public class PackingServiceTest {
 
 		Item i1 = new Item(1, BigDecimal.valueOf(10), 100);
 		Item i2 = new Item(2, BigDecimal.valueOf(1), 100);
-		
+
 		assert i1.getCostInCents() == i2.getCostInCents();
 
 		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1, i2));
@@ -139,7 +145,8 @@ public class PackingServiceTest {
 	/**
 	 * Test data from example, line 1
 	 * 
-	 * 81 : (1,53.38,€45) (2,88.62,€98) (3,78.48,€3) (4,72.30,€76) (5,30.18,€9) (6,46.34,€48)
+	 * 81 : (1,53.38,€45) (2,88.62,€98) (3,78.48,€3) (4,72.30,€76) (5,30.18,€9)
+	 * (6,46.34,€48)
 	 */
 	@Test
 	public void testDataLine1() {
@@ -196,7 +203,8 @@ public class PackingServiceTest {
 	/**
 	 * Test data from example, line 3
 	 * 
-	 * 75 : (1,85.31,€29) (2,14.55,€74) (3,3.98,€16) (4,26.24,€55) (5,63.69,€52) (6,76.25,€75) (7,60.02,€74) (8,93.18,€35) (9,89.95,€78)
+	 * 75 : (1,85.31,€29) (2,14.55,€74) (3,3.98,€16) (4,26.24,€55) (5,63.69,€52)
+	 * (6,76.25,€75) (7,60.02,€74) (8,93.18,€35) (9,89.95,€78)
 	 */
 	@Test
 	public void testDataLine3() {
@@ -230,7 +238,8 @@ public class PackingServiceTest {
 	/**
 	 * Test data from example, line 4
 	 * 
-	 * 56 : (1,90.72,€13) (2,33.80,€40) (3,43.15,€10) (4,37.97,€16) (5,46.81,€36) (6,48.77,€79) (7,81.80,€45) (8,19.36,€79) (9,6.76,€64)
+	 * 56 : (1,90.72,€13) (2,33.80,€40) (3,43.15,€10) (4,37.97,€16) (5,46.81,€36)
+	 * (6,48.77,€79) (7,81.80,€45) (8,19.36,€79) (9,6.76,€64)
 	 */
 	@Test
 	public void testDataLine4() {
@@ -260,52 +269,173 @@ public class PackingServiceTest {
 
 		assertEquals("8,9", solution.getStringOutput());
 	}
-	
+
 	@Test
 	public void test15RandomItems_1() {
-		
+
 		BigDecimal parcelMaxWeight = BigDecimal.valueOf(50);
-		
+
 		Parcel p = new Parcel(1, parcelMaxWeight);
-		
-		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1, p.getMaxWeight());
+
+		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1,
+				p.getMaxWeight());
 		BigDecimal createdWeight = items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
-		
+
 		assertEquals(0, parcelMaxWeight.compareTo(createdWeight));
-		
+
 		PackingService ps = new PackingService();
 		ParcelSolution solution = ps.optimise(p, items);
-		
 
 		// all weight should have been used
 		assertEquals(0, createdWeight.compareTo(solution.getCurrentWeight()));
 		assertEquals(0, BigDecimal.ZERO.compareTo(solution.getRemainingWeightLimit()));
-		
+
 		// all items should be in solution
 		assertEquals(items.size(), solution.getItems().size());
 	}
-	
+
 	@Test
 	public void test15RandomItems_2() {
-		
+
 		BigDecimal parcelMaxWeight = BigDecimal.valueOf(50);
-		
+
 		Parcel p = new Parcel(1, parcelMaxWeight);
-		
-		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1, p.getMaxWeight());
+
+		ArrayList<Item> items = PackerRandomTestUtils.getRandomItems(ItemValidator.MAX_NUM_OF_ITEMS, 1,
+				p.getMaxWeight());
 		BigDecimal createdWeight = items.stream().map(i -> i.getWeight()).reduce(BigDecimal.ZERO, BigDecimal::add);
-		
+
 		assertEquals(0, parcelMaxWeight.compareTo(createdWeight));
-		
+
 		PackingService ps = new PackingService();
 		ParcelSolution solution = ps.optimise(p, items);
-		
 
 		// all weight should have been used
 		assertEquals(0, createdWeight.compareTo(solution.getCurrentWeight()));
 		assertEquals(0, BigDecimal.ZERO.compareTo(solution.getRemainingWeightLimit()));
-		
+
 		// all items should be in solution
 		assertEquals(items.size(), solution.getItems().size());
 	}
+
+	@Test
+	public void testInvalidWeight_negative() {
+
+		thrown.expect(APIException.class);
+		thrown.expectMessage("weight");
+
+		PackingService ps = new PackingService();
+
+		BigDecimal maxWeight = new BigDecimal(100);
+
+		Parcel p = new Parcel(1, maxWeight);
+
+		Item i1 = new Item(1, -1, 100);
+
+		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1));
+
+		// validation exception will be thrown
+		ps.optimise(p, items);
+	}
+
+	@Test
+	public void testInvalidWeight_OverMax() {
+
+		thrown.expect(APIException.class);
+		thrown.expectMessage("weight");
+
+		PackingService ps = new PackingService();
+
+		BigDecimal maxWeight = ItemValidator.MAX_ITEM_WEIGHT.multiply(BigDecimal.TEN);
+
+		Parcel p = new Parcel(1, maxWeight);
+
+		Item i1 = new Item(1, ItemValidator.MAX_ITEM_WEIGHT.add(BigDecimal.ONE), 100);
+
+		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1));
+
+		// validation exception will be thrown
+		ps.optimise(p, items);
+	}
+
+	@Test
+	public void testInvalidWeight_zero() {
+
+		thrown.expect(APIException.class);
+		thrown.expectMessage("weight");
+
+		PackingService ps = new PackingService();
+
+		BigDecimal maxWeight = new BigDecimal(100);
+
+		Parcel p = new Parcel(1, maxWeight);
+
+		Item i1 = new Item(1, 0, 100);
+
+		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1));
+
+		// validation exception will be thrown
+		ps.optimise(p, items);
+	}
+
+	@Test
+	public void testInvalidCost_negative() {
+
+		thrown.expect(APIException.class);
+		thrown.expectMessage("cost");
+
+		PackingService ps = new PackingService();
+
+		BigDecimal maxWeight = new BigDecimal(100);
+
+		Parcel p = new Parcel(1, maxWeight);
+
+		Item i1 = new Item(1, 1, -1);
+
+		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1));
+
+		// validation exception will be thrown
+		ps.optimise(p, items);
+	}
+
+	@Test
+	public void testInvalidCost_OverMax() {
+
+		thrown.expect(APIException.class);
+		thrown.expectMessage("cost");
+
+		PackingService ps = new PackingService();
+
+		BigDecimal maxWeight = new BigDecimal(100);
+
+		Parcel p = new Parcel(1, maxWeight);
+
+		Item i1 = new Item(1, 1, ItemValidator.MAX_ITEM_COST_IN_CENTS + 1);
+
+		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1));
+
+		// validation exception will be thrown
+		ps.optimise(p, items);
+	}
+
+	@Test
+	public void testInvalidCost_zero() {
+
+		thrown.expect(APIException.class);
+		thrown.expectMessage("cost");
+
+		PackingService ps = new PackingService();
+
+		BigDecimal maxWeight = new BigDecimal(100);
+
+		Parcel p = new Parcel(1, maxWeight);
+
+		Item i1 = new Item(1, 1, 0);
+
+		ArrayList<Item> items = new ArrayList<>(Arrays.asList(i1));
+
+		// validation exception will be thrown
+		ps.optimise(p, items);
+	}
+
 }
